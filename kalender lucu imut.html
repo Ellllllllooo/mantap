@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalender Twilight Sky 💙💜💗</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700&display=swap');
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(
+                135deg,
+                #a8d8ea 0%,    /* Biru muda langit */
+                #aa96da 25%,   /* Ungu lavender */
+                #fcbad3 50%,   /* Pink pastel */
+                #a8d8ea 75%,   /* Biru lagi */
+                #aa96da 100%   /* Ungu tutup */
+            );
+            background-size: 400% 400%;
+            animation: twilightFlow 6s ease-in-out infinite;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Cloud decorations */
+        body::before,
+        body::after {
+            content: '☁️';
+            position: fixed;
+            font-size: 40px;
+            opacity: 0.3;
+            animation: floatCloud 8s ease-in-out infinite;
+        }
+        
+        body::before {
+            top: 15%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+        
+        body::after {
+            top: 25%;
+            right: 15%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes twilightFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes floatCloud {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            33% { transform: translateY(-15px) translateX(10px); }
+            66% { transform: translateY(10px) translateX(-5px); }
+        }
+        
+        .calendar-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
+            border-radius: 35px;
+            box-shadow: 
+                0 15px 35px rgba(170, 150, 218, 0.4),
+                0 5px 15px rgba(252, 186, 211, 0.3),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            border: 2px solid rgba(168, 216, 234, 0.4);
+            position: relative;
+        }
+        
+        .calendar-header {
+            background: linear-gradient(
+                135deg,
+                #667eea 0%,    /* Biru keunguan */
+                #764ba2 25%,   /* Ungu tua */
+                #f093fb 50%,   /* Pink keunguan */
+                #4facfe 75%,   /* Biru cerah */
+                #667eea 100%   /* Kembali ke biru */
+            );
+            background-size: 300% 300%;
+            animation: skyDance 4s ease-in-out infinite;
+            padding: 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @keyframes skyDance {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .month-year {
+            font-family: 'Fredoka One', cursive;
+            font-size: 32px;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            gap: 25px;
+        }
+        
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            font-size: 22px;
+            padding: 14px 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: white;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.2) rotate(180deg);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: linear-gradient(
+                135deg,
+                rgba(168, 216, 234, 0.3),
+                rgba(170, 150, 218, 0.3),
+                rgba(252, 186, 211, 0.3)
+            );
+            padding: 18px;
+            gap: 5px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .weekday {
+            text-align: center;
+            font-weight: 700;
+            color: #5e35b1;
+            font-size: 15px;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
+        }
+        
+        .days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.6);
+        }
+        
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            background: linear-gradient(
+                135deg,
+                rgba(168, 216, 234, 0.4),
+                rgba(170, 150, 218, 0.3),
+                rgba(252, 186, 211, 0.2)
+            );
+            border: 2px solid rgba(168, 216, 234, 0.3);
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+        
+        .day::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transition: left 0.5s;
+        }
+        
+        .day:hover::before {
+            left: 100%;
+        }
+        
+        .day:hover {
+            background: linear-gradient(
+                135deg,
+                rgba(102, 126, 234, 0.6),
+                rgba(118, 75, 162, 0.5),
+                rgba(240, 147, 251, 0.4)
+            );
+            transform: scale(1.15) rotate(-2deg);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            border-color: #667eea;
+        }
+        
+        .day.today {
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2,
+                #f093fb
+            );
+            color: white;
+            box-shadow: 0 0 25px rgba(102, 126, 234, 0.6);
+            animation: todayGlow 3s ease-in-out infinite;
+            border-color: white;
+        }
+        
+        @keyframes todayGlow {
+            0%, 100% { 
+                box-shadow: 0 0 25px rgba(102, 126, 234, 0.6);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 35px rgba(240, 147, 251, 0.8);
+                transform: scale(1.05);
+            }
+        }
+        
+        .day.other-month {
+            color: #b39ddb;
+            background: rgba(168, 216, 234, 0.2);
+            opacity: 0.5;
+        }
+        
+        .day-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: #4527a0;
+            margin-bottom: 4px;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.3);
+        }
+        
+        .day-emoji {
+            font-size: 20px;
+            animation: skyFloat 3s ease-in-out infinite;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        @keyframes skyFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-3px) rotate(5deg); }
+        }
+        
+        .special-day {
+            position: relative;
+            background: linear-gradient(
+                135deg,
+                rgba(240, 147, 251, 0.5),
+                rgba(118, 75, 162, 0.4),
+                rgba(102, 126, 234, 0.3)
+            );
+            border-color: rgba(240, 147, 251, 0.6);
+        }
+        
+        .special-day::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(45deg, #f093fb, #f5f5f5);
+            border-radius: 50%;
+            animation: starTwinkle 1.5s ease-in-out infinite;
+            box-shadow: 0 0 15px rgba(240, 147, 251, 0.6);
+        }
+        
+        @keyframes starTwinkle {
+            0%, 100% { 
+                transform: scale(1);
+                box-shadow: 0 0 15px rgba(240, 147, 251, 0.6);
+            }
+            50% { 
+                transform: scale(1.4);
+                box-shadow: 0 0 25px rgba(102, 126, 234, 0.8);
+            }
+        }
+        
+        .tooltip {
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2,
+                #f093fb
+            );
+            color: white;
+            padding: 12px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 10;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: #764ba2;
+        }
+        
+        .day:hover .tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-8px);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 25px;
+            background: linear-gradient(
+                135deg,
+                rgba(168, 216, 234, 0.2),
+                rgba(170, 150, 218, 0.2),
+                rgba(252, 186, 211, 0.2)
+            );
+            color: #4527a0;
+            font-size: 15px;
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(255,255,255,0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Responsive untuk mobile */
+        @media (max-width: 480px) {
+            .calendar-container {
+                margin: 15px;
+                border-radius: 30px;
+            }
+            
+            .month-year {
+                font-size: 28px;
+            }
+            
+            .day-number {
+                font-size: 16px;
+            }
+            
+            .day-emoji {
+                font-size: 18px;
+            }
+            
+            .nav-btn {
+                padding: 12px 16px;
+                font-size: 20px;
+            }
+            
+            .weekday {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <h1 class="month-year" id="monthYear">Agustus 2025</h1>
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="previousMonth()">←</button>
+                <button class="nav-btn" onclick="nextMonth()">→</button>
+            </div>
+        </div>
+        
+        <div class="weekdays">
+            <div class="weekday">Min</div>
+            <div class="weekday">Sen</div>
+            <div class="weekday">Sel</div>
+            <div class="weekday">Rab</div>
+            <div class="weekday">Kam</div>
+            <div class="weekday">Jum</div>
+            <div class="weekday">Sab</div>
+        </div>
+        
+        <div class="days" id="daysContainer"></div>
+        
+        <div class="footer">
+            💙💜💗 Kalender Twilight Sky - Warna Langit di Ujung Jari! ✨
+        </div>
+    </div>
+
+    <script>
+        let currentDate = new Date();
+        
+        const specialDays = {
+            // Januari
+            '1-1': { emoji: '🎆', title: 'Happy New Year Sky! 🌌' },
+            '1-14': { emoji: '🔮', title: 'Dream Day Manifest!' },
+            
+            // Februari
+            '2-14': { emoji: '💙', title: 'Twilight Valentine! 💜' },
+            '2-29': { emoji: '🌌', title: 'Rare Sky Day!' },
+            
+            // Maret
+            '3-8': { emoji: '🦋', title: 'Sky Goddess Day!' },
+            '3-20': { emoji: '🌸', title: 'Spring Sky Bloom!' },
+            
+            // April
+            '4-1': { emoji: '🎭', title: 'Sky Prank Day!' },
+            '4-22': { emoji: '🌍', title: 'Blue Planet Day!' },
+            
+            // Mei
+            '5-1': { emoji: '🌸', title: 'Sky Labor Day!' },
+            '5-20': { emoji: '💌', title: 'Sky Love Letter Day!' },
+            
+            // Juni
+            '6-1': { emoji: '🐬', title: 'Sky Children Day!' },
+            '6-21': { emoji: '☀️', title: 'Longest Sky Day!' },
+            
+            // Juli
+            '7-7': { emoji: '🌠', title: 'Tanabata Sky Wish!' },
+            '7-17': { emoji: '😊', title: 'Sky Emoji Day!' },
+            
+            // Agustus
+            '8-8': { emoji: '♾️', title: 'Infinity Sky Loop!' },
+            '8-15': { emoji: '💙', title: 'Sky Independence! 🇮🇩' },
+            '8-25': { emoji: '🍧', title: 'Sky Ice Cream Day!' },
+            
+            // September
+            '9-9': { emoji: '🐱', title: 'Sky Cat Day! Meow~' },
+            '9-21': { emoji: '☮️', title: 'Sky Peace Day!' },
+            
+            // Oktober
+            '10-10': { emoji: '🌈', title: 'Sky Pasta Day!' },
+            '10-31': { emoji: '🎃', title: 'Twilight Halloween!' },
+            
+            // November
+            '11-11': { emoji: '✨', title: 'Sky Singles Sale!' },
+            '11-28': { emoji: '🦃', title: 'Sky Thanksgiving!' },
+            
+            // Desember
+            '12-12': { emoji: '🌟', title: 'Sky Double Sale!' },
+            '12-24': { emoji: '🎄', title: 'Sky Christmas Eve!' },
+            '12-25': { emoji: '🎅', title: 'Sky Santa Day!' },
+            '12-31': { emoji: '🎆', title: 'Sky New Year Countdown!' }
+        };
+        
+        function generateCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            const monthNames = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            document.getElementById('monthYear').textContent = `${monthNames[month]} ${year}`;
+            
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+            
+            const daysContainer = document.getElementById('daysContainer');
+            daysContainer.innerHTML = '';
+            
+            const today = new Date();
+            
+            for (let i = 0; i < 42; i++) {
+                const dayDate = new Date(startDate);
+                dayDate.setDate(startDate.getDate() + i);
+                
+                const dayDiv = document.createElement('div');
+                dayDiv.className = 'day';
+                
+                const isCurrentMonth = dayDate.getMonth() === month;
+                const isToday = dayDate.toDateString() === today.toDateString();
+                
+                if (!isCurrentMonth) {
+                    dayDiv.classList.add('other-month');
+                }
+                
+                if (isToday) {
+                    dayDiv.classList.add('today');
+                }
+                
+                const dateKey = `${month + 1}-${dayDate.getDate()}`;
+                const special = specialDays[dateKey];
+                
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = dayDate.getDate();
+                
+                const dayEmoji = document.createElement('div');
+                dayEmoji.className = 'day-emoji';
+                
+                if (special) {
+                    dayDiv.classList.add('special-day');
+                    dayEmoji.textContent = special.emoji;
+                    
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'tooltip';
+                    tooltip.textContent = special.title;
+                    dayDiv.appendChild(tooltip);
+                } else if (isToday) {
+                    dayEmoji.textContent = '🌟';
+                } else if (dayDate.getDay() === 0 || dayDate.getDay() === 6) {
+                    const skyEmojis = ['☁️', '🌙', '🦋', '💫', '🌈', '🌸'];
+                    dayEmoji.textContent = skyEmojis[Math.floor(Math.random() * skyEmojis.length)];
+                } else {
+                    const twilightEmojis = ['💙', '💜', '💗', '🌌', '✨', '🦋', '⭐', '🌈', '🦄', '🌸', '🔮', '🎆'];
+                    dayEmoji.textContent = twilightEmojis[Math.floor(Math.random() * twilightEmojis.length)];
+                }
+                
+                dayDiv.appendChild(dayNumber);
+                dayDiv.appendChild(dayEmoji);
+                
+                dayDiv.addEventListener('click', () => {
+                    const skyMessages = [
+                        'Have a magical sky day!',
+                        'Your day will be colorful!',
+                        'Twilight vibes incoming!',
+                        'Sky full of dreams for you!',
+                        'Blue-purple-pink blessings!'
+                    ];
+                    const randomSky = skyMessages[Math.floor(Math.random() * skyMessages.length)];
+                    
+                    alert(`🌌 ${dayDate.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\n\n${randomSky} 💙💜💗`);
+                });
+                
+                daysContainer.appendChild(dayDiv);
+            }
+        }
+        
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            generateCalendar();
+        }
+        
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            generateCalendar();
+        }
+        
+        generateCalendar();
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('💙💜💗 Kalender Twilight Sky aktif! Langit senja dalam genggamanmu! ✨');
+        });
+    </script>
+</body>
+</html>
